@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduNexa Hub - Premium State Learning Platform</title>
+  
+  <!-- =========================================================================
+       GOOGLE ADSENSE AUTO VERIFICATION CODE PLACEHOLDER
+       REPLACE ca-pub-XXXXXXXXXXXXXXXX WITH YOUR ACTUAL ADSENSE PUBLISHER ID LATER
+       ========================================================================= -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
+  <!-- Tailwind CSS CDN for visual fidelity -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome CDN for modern responsive icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Embedded Premium Deep Dark Indigo Stylesheet -->
+  <style>
+    :root {
+      --glow-color: rgba(99, 102, 241, 0.15);
+      --glass-bg: rgba(15, 23, 42, 0.95);
+      --glass-border: rgba(99, 102, 241, 0.2);
+    }
+
+    body {
+      background-color: #0b1329; /* Dark Indigo/Slate layout */
+      color: #f1f5f9; /* High contrast text */
+    }
+
+    .glass-panel {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    aside {
+      background-color: #090d16 !important;
+      border-right: 1px solid #1e293b !important;
+    }
+
+    /* Legible high-contrast dark cards */
+    .light-card {
+      background-color: #111827 !important;
+      border: 1px solid #1e293b !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    input, textarea, select {
+      background-color: #090d16 !important;
+      border: 1px solid #334155 !important;
+      color: #f8fafc !important;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #6366f1 !important;
+      outline: none;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-slideUp {
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes scaleUp {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .animate-scaleUp {
+      animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #090d16;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4f46e5;
+    }
+  </style>
+</head>
+<body class="bg-[#0b1329] text-[#f1f5f9] font-sans selection:bg-indigo-500 selection:text-white">
+
+  <!-- Toast Alert Wrapper -->
+  <div id="toast-alert" class="fixed bottom-5 right-5 z-50 hidden transition-all duration-300 animate-slideUp">
+    <div id="toast-box" class="p-4 rounded-xl shadow-lg flex items-center space-x-2 border text-white bg-emerald-600 border-emerald-700">
+      <i id="toast-icon" class="fa-solid fa-circle-check"></i>
+      <span id="toast-message" class="text-sm font-semibold"></span>
+    </div>
+  </div>
+
+  <!-- --- SAFETY WARNING DELETE CONFIRMATION POPUP --- -->
+  <div id="delete-confirm-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex justify-center items-center p-4 hidden">
+    <div class="bg-[#111827] border border-red-500/30 rounded-2xl shadow-2xl max-w-md w-full p-6 relative text-left animate-scaleUp">
+      <div class="text-center space-y-3">
+        <div class="mx-auto w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
+          <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+        </div>
+        <h3 class="text-lg font-black text-white">Ensure Deletion</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Are you sure you want to permanently delete <strong id="delete-item-title" class="text-red-400"></strong>? This operational action cannot be undone.
+        </p>
+      </div>
+      <div class="flex space-x-3 mt-6">
+        <button onclick="cancelDelete()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-2.5 rounded-xl transition-all">
+          Cancel
+        </button>
+        <button onclick="confirmDelete()" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded-xl transition-all shadow-md">
+          Yes, Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- GLASSMORPHISM PREMIUM MODAL --- -->
+  <div id="premium-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex justify-center items-center p-4 overflow-y-auto hidden">
+    <div class="bg-[#111827] border border-indigo-500/30 rounded-2xl shadow-2xl max-w-2xl w-full p-6 relative text-left animate-scaleUp">
+      
+      <button onclick="closePremiumModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-200">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <!-- Step 1: Lead Collection Form -->
+      <div id="modal-step-lead" class="space-y-6">
+        <div class="text-center space-y-2">
+          <div class="mx-auto w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-400">
+            <i class="fa-solid fa-star text-xl animate-pulse"></i>
+          </div>
+          <h3 class="text-xl font-black text-white">Join EduNexa Premium Club</h3>
+          <p class="text-xs text-slate-300">Syllabus crash prep courses, ad-free downloads, and continuous expert support channels.</p>
+        </div>
+
+        <!-- Plan selection buttons -->
+        <div class="grid grid-cols-3 gap-2.5">
+          <button type="button" onclick="selectPlanTier('Silver')" id="btn-tier-Silver" class="p-3 rounded-xl border text-center transition-all bg-[#090d16] border-slate-700 text-slate-300 hover:border-indigo-400">
+            <span class="text-[10px] block uppercase tracking-wider">Silver</span>
+            <span class="text-sm font-bold block">₹149</span>
+          </button>
+          <button type="button" onclick="selectPlanTier('Gold')" id="btn-tier-Gold" class="p-3 rounded-xl border text-center transition-all bg-indigo-600 border-indigo-400 text-white font-black shadow-md">
+            <span class="text-[10px] block uppercase tracking-wider">Gold</span>
+            <span class="text-sm font-bold block">₹299</span>
+          </button>
+          <button type="button" onclick="selectPlanTier('Platinum')" id="btn-tier-Platinum" class="p-3 rounded-xl border text-center transition-all bg-[#090d16] border-slate-700 text-slate-300 hover:border-indigo-400">
+            <span class="text-[10px] block uppercase tracking-wider">Platinum</span>
+            <span class="text-sm font-bold block">₹499</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Plan Highlights -->
+        <div class="bg-indigo-950/40 border border-indigo-500/20 p-4 rounded-xl space-y-2">
+          <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest block">
+            Uniquely Unlocked with <span id="display-selected-plan-name" class="underline">Gold</span> Tier:
+          </span>
+          <div id="dynamic-benefits-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-slate-300">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+
+        <!-- Lead Collection Form Elements -->
+        <form id="lead-submission-form" onsubmit="handleLeadFormSubmit(event)" class="space-y-3.5">
+          <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Fill Contact Details to Choose Payment Plan</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 block mb-1">Student Full Name</label>
+              <input type="text" id="lead-name" class="w-full text-xs rounded-lg p-2.5 outline-none focus:border-indigo-500" required>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 block mb-1">Email Address</label>
+              <input type="email" id="lead-email" class="w-full text-xs rounded-lg p-2.5 outline-none focus:border-indigo-500" required>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 block mb-1">Phone Number</label>
+              <input type="tel" id="lead-phone" class="w-full text-xs rounded-lg p-2.5 outline-none focus:border-indigo-500" required>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 block mb-1">WhatsApp Number</label>
+              <input type="tel" id="lead-whatsapp" class="w-full text-xs rounded-lg p-2.5 outline-none focus:border-indigo-500" required>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 block mb-1">Class / Batch</label>
+              <input type="text" id="lead-class" class="w-full text-xs rounded-lg p-2.5 outline-none focus:border-indigo-500" required>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-1">
+            <i class="fa-solid fa-lock text-xs mr-1"></i>
+            <span>Securely Pay via Razorpay Integration</span>
+          </button>
+        </form>
+
+        <div class="bg-indigo-950/40 p-3 rounded-xl border border-indigo-900/30">
+          <p class="text-[11px] text-slate-300 italic">"I unlocked Silver premium access through our referral rewards system. The past entrance papers and physics prep notes have been incredibly helpful!"</p>
+          <span class="text-[9px] text-slate-400 block text-right mt-1">- Karthika, Plus Two Science Student, Kochi</span>
+        </div>
+      </div>
+
+      <!-- Step 2: WhatsApp Lead Feedback -->
+      <div id="modal-step-success" class="text-center space-y-6 py-6 hidden animate-slideUp">
+        <div class="mx-auto w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+          <i class="fa-solid fa-circle-check text-3xl"></i>
+        </div>
+        <div class="space-y-2">
+          <h3 class="text-lg font-black text-white">Application Received Successfully!</h3>
+          <p class="text-xs text-slate-300">Our admissions and premium enrollment team has registered your interest.</p>
+        </div>
+
+        <div class="space-y-3 pt-2">
+          <p class="text-[11px] text-slate-600">Click below to communicate directly with our academic advisors via WhatsApp:</p>
+          <a id="whatsapp-direct-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>Contact Support via WhatsApp</span>
+          </a>
+        </div>
+
+        <div class="pt-4">
+          <button onclick="closePremiumModal()" class="text-xs text-slate-500 underline">
+            Go Back to Lounge
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Main View Container -->
+  <div class="min-h-screen bg-[#0b1329] text-slate-100 flex flex-col md:flex-row font-sans">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden bg-[#090d16] p-4 flex justify-between items-center sticky top-0 z-20 border-b border-indigo-950">
+      <div class="flex items-center space-x-2 text-indigo-400 font-bold text-xl cursor-pointer" onclick="handleLogoClicks()">
+        <i class="fa-solid fa-book-open"></i>
+        <span>EduNexa Hub</span>
+      </div>
+      <button onclick="toggleMobileSidebar()" class="text-slate-400">
+        <i id="mobile-menu-icon" class="fa-solid fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="hidden md:block md:w-64 bg-[#090d16] border-r border-indigo-955 h-screen sticky top-0 flex-shrink-0 p-4 shadow-sm overflow-y-auto z-10">
+      <div class="hidden md:flex items-center space-x-2 text-indigo-400 font-bold text-lg mb-6 px-2 mt-2 cursor-pointer select-none" onclick="handleLogoClicks()">
+        <i class="fa-solid fa-book-open animate-pulse text-indigo-400"></i>
+        <span>EduNexa Hub</span>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav id="nav-container" class="space-y-1 text-sm font-medium">
+        <!-- Dynamically loaded on window load via JS -->
+      </nav>
+
+      <!-- Sidebar Native Banner -->
+      <div id="sidebar-ad-placement" class="px-2 pt-4 hidden md:block">
+        <!-- Ad Banner populated via JS -->
+      </div>
+
+      <!-- Premium Upgrade widget inside sidebar -->
+      <div id="premium-sidebar-widget" class="mt-6 p-4 bg-gradient-to-br from-indigo-955 to-indigo-900 rounded-xl border border-indigo-850 text-left">
+        <div class="flex items-center space-x-1.5 text-amber-400 font-bold text-xs mb-1">
+          <i class="fa-solid fa-star"></i>
+          <span>Premium Membership</span>
+        </div>
+        <p class="text-[11px] text-slate-300 mb-3 font-semibold">No Ads, unlimited study resources, and master revision support.</p>
+        <button onclick="openPremiumModal()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold py-2 rounded-lg transition-all shadow">
+          Upgrade Plan
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 p-4 md:p-6 overflow-y-auto max-w-6xl mx-auto w-full flex flex-col justify-between">
+      
+      <div class="space-y-6">
+        
+        <!-- Header Bar -->
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 bg-[#090d16] p-4 rounded-xl border border-indigo-950 gap-4 text-left">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span id="role-badge" class="text-[9px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                Student Lounge
+              </span>
+              <span class="text-xs text-slate-300 font-bold">Representative Director: <strong class="text-indigo-400">Platform Director</strong></span>
+            </div>
+            <h1 id="active-tab-title" class="text-xl font-black text-white capitalize flex items-center mt-1">
+              Dashboard
+            </h1>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <span id="premium-status-indicator" class="hidden flex items-center bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-xs font-bold border border-amber-500/30">
+              <i class="fa-solid fa-star mr-1 text-amber-500 animate-spin"></i> Premium: Gold
+            </span>
+
+            <div class="flex items-center space-x-2 bg-slate-950 border border-indigo-955 p-1.5 rounded-lg text-right">
+              <div>
+                <p id="profile-full-name" class="text-xs font-bold text-slate-200">Rahul Nair</p>
+                <p id="profile-sub-detail" class="text-[9px] text-amber-400 font-bold">Points: 0 Pts</p>
+              </div>
+              <button onclick="handleProfileLogout()" class="text-[10px] bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1.5 rounded font-bold transition-all ml-2 border border-slate-700">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- --- WORKSPACE ROUTED TABS --- -->
+
+        <!-- TAB: DASHBOARD -->
+        <div id="tab-dashboard" class="tab-view space-y-6 text-left">
+          
+          <!-- Authentication Barrier Block if Logged Out -->
+          <div id="dashboard-auth-block" class="bg-[#090d16] p-6 rounded-2xl border border-indigo-955 max-w-md mx-auto space-y-4 shadow-sm text-left">
+            <div class="text-center">
+              <i class="fa-solid fa-book-open text-indigo-400 text-3xl mb-2"></i>
+              <h2 class="text-lg font-bold text-white">Welcome to the Student Lounge</h2>
+              <p class="text-xs text-slate-300">Access targeted Kerala DHSE & SCERT board past resources easily.</p>
+            </div>
+
+            <div class="flex border-b border-indigo-950">
+              <button onclick="changeAuthMode('login')" id="btn-auth-login" class="flex-1 pb-2 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400">
+                Quick Login
+              </button>
+              <button onclick="changeAuthMode('register')" id="btn-auth-register" class="flex-1 pb-2 text-sm font-bold text-slate-400">
+                Register Account
+              </button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="auth-login-form" onsubmit="handleStudentLoginSubmit(event)" class="space-y-3 text-left text-xs">
+              <div>
+                <label class="font-bold text-slate-300">Username ID</label>
+                <input type="text" id="login-username" placeholder="e.g. rahul_nair" class="w-full bg-[#0b1329] border border-indigo-950 rounded-lg p-2.5 outline-none focus:border-indigo-500 text-white mt-1">
+              </div>
+              <div>
+                <label class="font-bold text-slate-300">Password</label>
+                <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-[#0b1329] border border-indigo-950 rounded-lg p-2.5 outline-none focus:border-indigo-550 text-white mt-1">
+              </div>
+              
+              <!-- Secure Persistent login session check -->
+              <div class="flex items-center space-x-2 pt-1">
+                <input type="checkbox" id="remember-me" class="rounded text-indigo-600 bg-slate-900 border-slate-700 cursor-pointer" checked>
+                <label for="remember-me" class="text-[11px] text-slate-300 font-semibold cursor-pointer select-none">
+                  Remember Me (Keep me logged in on this device)
+                </label>
+              </div>
+
+              <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 rounded-lg transition-colors shadow">
+                Log In
+              </button>
+              <p class="text-[9px] text-center text-slate-400 italic mt-2">Default test accounts: <strong>rahul_nair</strong>, <strong>abhijith_tvm</strong> (Password: 123)</p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="auth-register-form" onsubmit="handleStudentRegisterSubmit(event)" class="space-y-3 text-left text-xs hidden">
+              <div>
+                <label class="font-bold text-slate-300">Desired Username ID</label>
+                <input type="text" id="register-username" placeholder="e.g. jishnu_tvm" class="w-full bg-[#0b1329] border border-indigo-950 rounded-lg p-2.5 outline-none focus:border-indigo-505 text-white mt-1" required>
+              </div>
+              <div>
+                <label class="font-bold text-slate-300">Full Student Name</label>
+                <input type="text" id="register-name" placeholder="e.g. Jishnu Prasad" class="w-full bg-[#0b1329] border border-indigo-950 rounded-lg p-2.5 outline-none focus:border-indigo-505 text-white mt-1" required>
+              </div>
+              <div>
+                <label class="font-bold text-slate-300">Password</label>
+                <input type="password" id="register-password" placeholder="••••••••" class="w-full bg-[#0b1329] border border-indigo-950 rounded-lg p-2.5 outline-none focus:border-indigo-505 text-white mt-1" required>
+              </div>
+              <div>
+                <label class="font-bold text-slate-300 block">Phone Number</label>
+                <input type="tel" id="register-phone" placeholder="e.g. +91 94470 12345" class="w-full bg-[#0b1329] border border-indigo-955 rounded-lg p-2.5 outline-none focus:border-indigo-505 text-white mt-1" required>
+              </div>
+              <div>
+                <label class="font-bold text-slate-300 block">WhatsApp Number</label>
+                <input type="tel" id="register-whatsapp" placeholder="e.g. +91 94470 12345" class="w-full bg-[#0b1329] border border-indigo-950 rounded-lg p-2.5 outline-none focus:border-indigo-505 text-white mt-1">
+              </div>
+              <div>
+                <label class="font-bold text-slate-300 block">School Name</label>
+                <input type="text" id="register-school" placeholder="e.g. Model HSS" class="w-full bg-[#0b1329] border border-indigo-950 rounded-lg p-2.5 outline-none focus:border-indigo-505 text-white mt-1">
+              </div>
+              <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-lg transition-colors shadow">
+                Register & Enter
+              </button>
+            </form>
+          </div>
+
+          <!-- Secured Dashboard Content Area -->
+          <div id="dashboard-secured-view" class="space-y-6 hidden">
+            <!-- Operator Real-time Earnings Sync (Visible only to authenticated owners) -->
+            <div id="admin-summary-strip" class="p-4 bg-[#090d16] text-white rounded-xl space-y-3 shadow-md border border-indigo-950 hidden">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2 text-emerald-400">
+                  <i class="fa-solid fa-shield-halved animate-pulse"></i>
+                  <span class="text-xs font-bold uppercase tracking-wider">Operator Real-Time Earnings Sync</span>
+                </div>
+                <button onclick="handleOwnerLogout()" class="text-[10px] bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded font-bold">
+                  Lock Room
+                </button>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-left">
+                  <span class="text-[10px] text-slate-400 block font-medium">Visitor Impressions</span>
+                  <span id="stat-impressions" class="text-sm font-bold text-indigo-300">0 Views</span>
+                </div>
+                <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-left">
+                  <span class="text-[10px] text-slate-400 block font-medium">Google AdSense Yield</span>
+                  <span id="stat-earnings" class="text-sm font-bold text-emerald-400">₹0.00</span>
+                </div>
+                <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-left">
+                  <span class="text-[10px] text-slate-400 block font-medium">Subscriptions Balance</span>
+                  <span id="stat-premium-revenue" class="text-sm font-bold text-amber-400">₹0.00</span>
+                </div>
+                <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 text-left">
+                  <span class="text-[10px] text-slate-400 block font-medium">Document Fee Yield</span>
+                  <span id="stat-service-revenue" class="text-sm font-bold text-blue-400">₹0.00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Intro Banner -->
+            <div class="bg-gradient-to-r from-[#111c44] to-[#1e293b] text-white p-6 rounded-2xl relative overflow-hidden shadow-md text-left">
+              <div class="relative z-10 max-w-lg space-y-2">
+                <h2 class="text-xl md:text-2xl font-black flex items-center gap-1.5">
+                  <i class="fa-solid fa-wand-magic-sparkles text-amber-350 animate-pulse"></i>
+                  <span>Let's Start Learning, <span id="hero-display-name">Rahul Nair</span>!</span>
+                </h2>
+                <p class="text-xs text-indigo-100 leading-relaxed font-semibold">
+                  Syllabus masterclasses, premium mock exams, dynamic study note generator, and referral reward systems are now structured in one comprehensive space.
+                </p>
+                <p class="text-[10px] text-indigo-200 font-bold">Registered Number: <span id="hero-display-phone" class="font-semibold text-white">+91 7593062573</span></p>
+                
+                <div class="flex items-center gap-2 pt-2 flex-wrap">
+                  <span class="text-[10px] bg-slate-900 border border-indigo-700 text-amber-300 font-bold px-3 py-1 rounded-full">
+                    Points Balance: <span id="hero-display-points">0</span> Pts
+                  </span>
+                  <button onclick="navigateToTab('referrals')" class="text-[10px] bg-[#4f46e5]/40 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/30 font-bold px-3 py-1 rounded-full transition-all">
+                    Invite Friends (Earn Points)
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Ad Placement -->
+            <div id="hero-ad-placement"></div>
+
+            <!-- Platform Guidelines & Community Rules displayed on page -->
+            <div class="bg-[#090d16] p-5 rounded-2xl border border-indigo-955 text-left space-y-3 shadow-md">
+              <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-400 uppercase tracking-widest border-b border-indigo-950/40 pb-2">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Platform Safety & Community Code of Conduct</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="rules-box-container">
+                <!-- Rendered dynamically in app.js -->
+              </div>
+            </div>
+
+            <!-- Coaching Center Ads & Referral banner grids -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Coaching Center Ads -->
+              <div class="bg-[#090d16] p-5 rounded-2xl border border-indigo-955 space-y-3 shadow-md">
+                <h3 class="text-xs font-black text-indigo-400 uppercase tracking-wider flex items-center gap-1">
+                  <i class="fa-solid fa-award text-indigo-400 animate-pulse"></i>
+                  <span>State Coaching Center Advertisements</span>
+                </h3>
+                <div class="space-y-2.5" id="coaching-ads-dashboard">
+                  <!-- Loaded via JS -->
+                </div>
+              </div>
+
+              <!-- Referral micro-widget -->
+              <div class="bg-[#090d16] p-5 rounded-2xl border border-indigo-955 space-y-3 flex flex-col justify-between shadow-md">
+                <div class="space-y-1">
+                  <h3 class="text-xs font-black text-indigo-400 uppercase tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-share-nodes text-indigo-400"></i>
+                    <span>Free Premium Access Referral</span>
+                  </h3>
+                  <p class="text-xs text-slate-300 font-semibold leading-relaxed">Invite friends (earn 2 points each) and collect 450 points to instantly redeem 1 Month of Silver Plan for completely Free.</p>
+                </div>
+                <div class="bg-slate-950 p-4 rounded-xl border border-indigo-900/30 text-center space-y-2">
+                  <p class="text-[11px] text-slate-400 font-bold">Your Referral Code:</p>
+                  <span id="dashboard-referral-code" class="text-sm font-black text-indigo-400 font-mono tracking-widest block bg-slate-900 p-1 rounded border border-indigo-950">RAHUL150</span>
+                </div>
+                <button onclick="redeemPointsForSilver()" class="w-full bg-[#4f46e5] hover:bg-[#3730a3] text-white text-xs font-bold py-2.5 rounded-xl transition-all shadow-md">
+                  Redeem Points (Need 450 Pts)
+                </button>
+              </div>
+            </div>
+
+            <!-- Featured study materials preview -->
+            <div class="space-y-4">
+              <h3 class="text-base font-bold text-slate-300">Featured Study Materials</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="featured-papers-container">
+                <!-- Loaded via JS -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB: AI NOTES & STUDY GEN -->
+        <div id="tab-ai-notes" class="tab-view space-y-6 text-left hidden">
+          <div class="bg-[#090d16] p-6 rounded-2xl border border-indigo-955 space-y-4 shadow-md">
+            <div class="max-w-xl">
+              <h2 class="text-base font-bold text-white">StudyVerse Local AI Research Assistant</h2>
+              <p class="text-xs text-slate-300 mt-1 font-semibold leading-relaxed">
+                Type a topic keyword (such as "optics", "organic chemistry", or "circle theorems") to instantly render high-quality study outlines.
+              </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="text" id="ai-prompt-input" placeholder="E.g., Wave optics Huygens derivation or SCERT Math Circle..." class="flex-1 text-xs bg-[#0b1329] border border-indigo-950 rounded-lg p-2.5 outline-none focus:border-indigo-500 text-white font-semibold">
+              <button onclick="triggerAINotesGen()" id="btn-ai-gen" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-5 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow">
+                <i class="fa-solid fa-sparkles text-amber-300 animate-pulse"></i>
+                <span>Generate Syllabus Notes</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Native Injected Ad Slot Between Notes -->
+          <div id="ai-notes-ad-placement"></div>
+
+          <!-- AI Generator Output Box -->
+          <div id="ai-output-box" class="bg-[#090d16] rounded-2xl border border-indigo-955 shadow-sm overflow-hidden hidden animate-slideUp">
+            <div class="bg-slate-950 border-b border-indigo-955 px-4 py-3 flex justify-between items-center">
+              <span class="text-xs font-bold text-indigo-400 flex items-center gap-1">
+                <i class="fa-solid fa-sparkles text-amber-500 animate-bounce"></i> Output Outline
+              </span>
+              <button onclick="downloadRawAiText()" class="text-[10px] bg-white hover:bg-slate-55 text-slate-700 border border-slate-200 px-2.5 py-1 rounded font-bold flex items-center gap-1 shadow-sm">
+                <i class="fa-solid fa-download"></i> Save Raw Text
+              </button>
+            </div>
+            <div class="p-6 bg-[#0b0f19]/30 overflow-y-auto max-h-[400px]">
+              <pre id="ai-pre-container" class="text-xs text-slate-300 font-semibold whitespace-pre-wrap leading-relaxed"></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: KERALA MODEL PAPERS -->
+        <div id="tab-papers" class="tab-view space-y-6 text-left hidden">
+          <!-- Document Viewer Frame -->
+          <div id="viewer-container" class="bg-[#090d16] rounded-2xl border border-indigo-955 overflow-hidden hidden animate-slideUp">
+            <div class="bg-slate-950 px-4 py-3 border-b border-indigo-950/40 flex flex-wrap justify-between items-center gap-2">
+              <div>
+                <span id="view-board-tag" class="text-[9px] bg-indigo-900/40 text-indigo-400 font-bold px-2 py-0.5 rounded uppercase">HSSLive</span>
+                <h3 id="view-title" class="text-sm font-bold text-slate-200 mt-1">Physics Paper</h3>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="downloadPaperText()" class="text-[10px] bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded font-bold flex items-center gap-1">
+                  <i class="fa-solid fa-download"></i> Download (.txt)
+                </button>
+                <button onclick="closeDocumentReader()" class="text-[10px] text-slate-400 hover:text-slate-200 font-bold px-2 py-1.5">
+                  Close Reader
+                </button>
+              </div>
+            </div>
+            <div id="viewer-paper-content" class="p-6 bg-slate-950 text-slate-100 font-mono text-xs overflow-y-auto max-h-[500px] whitespace-pre-wrap leading-relaxed select-text">
+              <!-- Loaded dynamically via JS -->
+            </div>
+          </div>
+
+          <!-- List of papers -->
+          <div class="space-y-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-base font-bold text-slate-200">Available Paper Repository</h3>
+              <span id="papers-count" class="text-xs text-indigo-400 font-bold">2 Units Available</span>
+            </div>
+            <div id="papers-container" class="grid grid-cols-1 gap-3">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: ONLINE MOCK TESTS -->
+        <div id="tab-mock-tests" class="tab-view space-y-6 text-left hidden">
+          <!-- Test Selector Screen -->
+          <div id="mock-selector-screen" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Rendered via JS -->
+          </div>
+
+          <!-- Active Exam Screen -->
+          <div id="active-mock-box" class="bg-[#090d16] p-6 rounded-2xl border border-indigo-955 shadow-sm space-y-6 hidden">
+            <div class="flex justify-between items-center pb-3 border-b border-indigo-950/40">
+              <h3 id="active-mock-title" class="text-base font-bold text-white">Maths Mock</h3>
+              <button onclick="exitActiveMock()" class="text-xs text-slate-400 underline">
+                Exit Exam
+              </button>
+            </div>
+
+            <div id="questions-viewport" class="space-y-5">
+              <!-- Populated via JS -->
+            </div>
+
+            <button onclick="submitCompletedMock()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-6 rounded-lg shadow-md">
+              Submit Answers
+            </button>
+          </div>
+
+          <!-- Assessment score screen -->
+          <div id="mock-result-box" class="bg-[#090d16] p-6 rounded-2xl border border-indigo-955 shadow-sm text-center py-6 hidden animate-slideUp">
+            <i class="fa-solid fa-award text-3xl text-emerald-500 mx-auto animate-bounce"></i>
+            <h4 class="text-lg font-bold mt-2">Exam Assessment Complete</h4>
+            <p id="mock-score-display" class="text-2xl font-black text-indigo-600 mt-4">1 / 2</p>
+            <button onclick="exitActiveMock()" class="mt-4 text-xs text-slate-400 underline block mx-auto">
+              Return to Test Library
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB: CIRCLE CHAT -->
+        <div id="tab-groups" class="tab-view grid grid-cols-1 lg:grid-cols-3 gap-6 text-left hidden">
+          <div class="lg:col-span-1 space-y-4">
+            <div class="bg-[#090d16] p-4 rounded-xl border border-indigo-955 shadow-sm">
+              <h3 class="text-sm font-bold text-slate-200 mb-2">Weekly Goals</h3>
+              <div class="space-y-3" id="study-plans-checkboxes">
+                <!-- Loaded via JS -->
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-2 bg-[#090d16] rounded-2xl border border-indigo-955 shadow-sm flex flex-col justify-between h-[400px]">
+            <div class="bg-slate-950 px-4 py-3 border-b border-indigo-950/40 flex justify-between items-center">
+              <h3 class="text-xs font-bold text-slate-200">Kerala Prep Room Chat</h3>
+            </div>
+            <div id="chat-messages-viewport" class="flex-1 p-4 overflow-y-auto space-y-4">
+              <!-- Message bubbles loaded via JS -->
+            </div>
+            <form onsubmit="handleChatSend(event)" class="p-3 border-t border-indigo-950/40 flex space-x-2 bg-slate-950">
+              <input type="text" id="chat-text-input" placeholder="Type a message..." class="flex-1 text-xs border rounded-lg p-2 outline-none text-white focus:border-indigo-500 bg-[#090d16]">
+              <button type="submit" class="bg-[#4f46e5] text-white px-4 py-2 rounded-lg">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- TAB: ACADEMY COURSES -->
+        <div id="tab-courses" class="tab-view space-y-6 text-left hidden animate-fadeIn">
+          <div class="bg-[#090d16] p-5 rounded-2xl border border-indigo-955 text-left">
+            <h2 class="text-base font-black text-slate-800">EduNexa Academy Premium Batches</h2>
+            <p class="text-xs text-slate-600 mt-1 font-semibold leading-relaxed">Learn from Kerala's most trusted teachers. Integrated online classes with real-time doubt clearing sessions.</p>
+          </div>
+          <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- TAB: REFERRAL HUB -->
+        <div id="tab-referrals" class="tab-view space-y-6 text-left hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Invite friend form -->
+            <div class="bg-[#090d16] p-5 rounded-2xl border border-indigo-955 shadow-sm space-y-4 shadow-md text-left">
+              <div class="space-y-1">
+                <h3 class="text-xs font-black text-indigo-400 uppercase tracking-wider">Invite Friends & Earn Points</h3>
+                <p class="text-xs text-slate-305 font-bold">Earn exactly 2 Points for every friend who registers using your secret link.</p>
+                <p class="text-[10px] text-amber-500 font-bold"><i class="fa-solid fa-circle-info mr-1"></i> Daily limit of maximum 3 referrals per 24 hours.</p>
+              </div>
+
+              <form onsubmit="handleReferralInviteSubmit(event)" class="space-y-3.5">
+                <div>
+                  <label class="text-[10px] font-bold text-slate-300 block mb-1">Friend's Username ID</label>
+                  <input type="text" id="refer-friend-name" placeholder="e.g. abhijith_tvm" class="w-full text-xs rounded-lg p-2.5 outline-none focus:border-indigo-500 text-white font-semibold" required>
+                </div>
+                <button type="submit" class="w-full bg-[#4f46e5] hover:bg-[#3730a3] text-white text-xs font-bold py-2.5 rounded-lg shadow-md shadow-indigo-950">
+                  Generate Invitation Link & Credit Points
+                </button>
+                <p class="text-[9px] text-slate-300 font-bold italic">Valid registered companions: <strong>abhijith_tvm</strong>, <strong>sneha_kochi</strong>.</p>
+              </form>
+            </div>
+
+            <!-- Points wallet redeem -->
+            <div class="bg-[#090d16] p-5 rounded-2xl border border-indigo-955 shadow-sm flex flex-col justify-between shadow-md text-left">
+              <div class="space-y-1">
+                <h3 class="text-xs font-black text-indigo-400 uppercase tracking-wider">Redeem Points</h3>
+                <p class="text-xs text-slate-300 font-semibold leading-relaxed">With the new point structure, you need 450 points to redeem a free Month of Silver Premium Plan.</p>
+              </div>
+              
+              <div class="bg-slate-950 p-4 rounded-xl border border-indigo-900/30 text-center">
+                <p class="text-xs text-slate-400 font-bold">Your Current Points Balance:</p>
+                <span id="referral-points-balance" class="text-3xl font-black text-indigo-600 block mt-1">0 Pts</span>
+              </div>
+
+              <button onclick="redeemPointsForSilver()" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 text-white text-xs font-bold py-2.5 rounded-xl transition-all shadow-md">
+                Redeem 1 Month Silver Access (Requires 450 Pts)
+              </button>
+            </div>
+          </div>
+
+          <!-- History -->
+          <div class="bg-[#090d16] p-5 rounded-2xl border border-indigo-955 shadow-sm space-y-3">
+            <h3 class="text-xs font-black text-slate-200 uppercase tracking-wider text-left">Your Referral History</h3>
+            <div id="referrals-history-list" class="space-y-2">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: PORTFOLIO -->
+        <div id="tab-portfolio" class="tab-view grid grid-cols-1 lg:grid-cols-2 gap-6 text-left hidden animate-fadeIn">
+          <div class="bg-[#090d16] p-6 rounded-2xl border border-indigo-955 shadow-sm space-y-4 shadow-md">
+            <h3 class="text-sm font-bold text-slate-200">Fill Portfolio Details</h3>
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="text-[10px] font-bold text-slate-500 block mb-1">Student Full Name</label>
+                <input type="text" id="resume-name" class="w-full text-xs rounded-lg p-2 text-white focus:border-indigo-500 outline-none">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold text-slate-500 block mb-1">Contact Phone Number</label>
+                <input type="text" id="resume-phone" class="w-full text-xs rounded-lg p-2 text-white focus:border-indigo-500 outline-none">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold text-slate-550 block mb-1">School Email</label>
+                <input type="email" id="resume-email" class="w-full text-xs rounded-lg p-2 text-white focus:border-indigo-500 outline-none">
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <button onclick="downloadPortfolioFile()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md">
+              <i class="fa-solid fa-download"></i> Download Portfolio (.txt)
+            </button>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-xs text-left shadow-md">
+              <h4 id="resume-view-name" class="font-bold text-center border-b pb-2 uppercase text-slate-800">Rahul Nair</h4>
+              <p class="mt-2 text-slate-600 font-bold">Phone: <span id="resume-view-phone">+91 7593062573</span></p>
+              <p class="text-slate-600 font-bold">Email: <span id="resume-view-email">rahul.nair@school.in</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: SCHOLARSHIPS -->
+        <div id="tab-scholarships" class="tab-view space-y-6 text-left hidden animate-fadeIn">
+          <div class="bg-[#090d16] p-4 rounded-xl border border-indigo-955 shadow-sm flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <div>
+              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Live database sync</h3>
+              <h4 class="text-sm font-bold text-slate-200">Higher Education Grants & Scholarship Funds</h4>
+            </div>
+            <button onclick="triggerScholarshipSync()" id="btn-sync-schol" class="bg-indigo-600 text-white text-xs font-bold py-2 px-4 rounded-lg flex items-center gap-1.5 shadow transition-colors">
+              <i class="fa-solid fa-rotate animate-spin hidden" id="spin-schol"></i>
+              <span>Fetch Live Grants</span>
+            </button>
+          </div>
+
+          <div id="scholarships-grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- TAB: TOOLS & CALCULATORS -->
+        <div id="tab-tools" class="tab-view grid grid-cols-1 lg:grid-cols-2 gap-6 text-left hidden animate-fadeIn">
+          <!-- Countdown widget -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 shadow-md">
+            <div class="space-y-1">
+              <h3 class="text-sm font-bold text-slate-800">Board Exam Countdown</h3>
+              <p class="text-xs text-slate-500 font-bold">Track standard remaining time till board examinations begin on March 10th, 2027.</p>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 text-center text-xs">
+              <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <span id="countdown-days" class="text-xl font-extrabold text-indigo-600 block">0</span>
+                <span class="text-[9px] text-[#475569] font-bold uppercase">Days</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <span id="countdown-hours" class="text-xl font-extrabold text-indigo-600 block">0</span>
+                <span class="text-[9px] text-[#475569] font-bold uppercase">Hours</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <span id="countdown-mins" class="text-xl font-extrabold text-indigo-600 block">0</span>
+                <span class="text-[9px] text-[#475569] font-bold uppercase">Mins</span>
+              </div>
+              <div class="bg-slate-55 p-3 rounded-lg border border-slate-200">
+                <span id="countdown-secs" class="text-xl font-extrabold text-indigo-600 block">0</span>
+                <span class="text-[9px] text-[#475569] font-bold uppercase">Secs</span>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Target Exam Date</label>
+              <input type="date" id="exam-date-input" value="2027-03-10" onchange="handleExamDateChange()" class="w-full text-xs border border-slate-200 rounded-lg p-2 text-[#0f172a] outline-none bg-white">
+            </div>
+          </div>
+
+          <!-- Mark Calculator -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 shadow-md">
+            <div class="space-y-1">
+              <h3 class="text-sm font-bold text-slate-800">State Syllabus Mark Analyzer</h3>
+              <p class="text-xs text-[#334155] font-bold">Calculate percentage conversions instantly.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="text-[10px] font-bold text-slate-500 block mb-1">Obtained Mark Score</label>
+                <input type="number" id="calc-obtained" placeholder="e.g. 540" value="540" class="w-full text-xs border border-[#cbd5e1] rounded-lg p-2.5 outline-none focus:border-indigo-500 text-slate-900">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold text-slate-500 block mb-1">Maximum Combined Total</label>
+                <input type="number" id="calc-total" placeholder="e.g. 600" value="600" class="w-full text-xs border border-[#cbd5e1] rounded-lg p-2.5 outline-none focus:border-indigo-500 text-slate-900">
+              </div>
+            </div>
+
+            <button onclick="runGpaAnalysis()" class="w-full bg-[#4f46e5] hover:bg-indigo-750 text-white text-xs font-bold py-2.5 rounded-lg transition-colors shadow-md">
+              Analyse & Calculate Grade
+            </button>
+
+            <div id="calc-result-strip" class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center hidden animate-slideUp">
+              <div>
+                <span class="text-[10px] text-slate-305 block font-bold">Calculated Percentage</span>
+                <span id="result-percentage" class="text-lg font-extrabold text-slate-105">90%</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-slate-305 block font-bold">Assigned Board Grade</span>
+                <span id="result-grade" class="text-lg font-extrabold text-indigo-700">A+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: OPERATOR Control Panel -->
+        <div id="tab-operator" class="tab-view space-y-6 text-left hidden">
+          <!-- Auth barrier if not authenticated -->
+          <div id="operator-auth-barrier" class="bg-white p-6 rounded-2xl border border-slate-200 max-w-sm mx-auto space-y-4 shadow-sm shadow-md">
+            <div class="text-center">
+              <i class="fa-solid fa-shield-halved text-amber-500 text-3xl animate-pulse mb-2"></i>
+              <h3 class="text-base font-extrabold text-slate-800">Administrator Credentials Required</h3>
+              <p class="text-xs text-slate-400">Unlock control capabilities to calibrate live platform attributes.</p>
+            </div>
+
+            <form onsubmit="handleOperatorLogin(event)" class="space-y-3 text-xs">
+              <div>
+                <label class="text-[10px] font-bold text-slate-500 block mb-1">Secret Key</label>
+                <input type="password" id="operator-key-field" placeholder="Enter administrator passcode" class="w-full text-xs border rounded-lg p-2 text-slate-900 focus:border-indigo-500 outline-none" required>
+              </div>
+              <p id="operator-auth-error" class="text-[10px] text-red-500 font-semibold hidden"></p>
+              <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 rounded-lg shadow-md">
+                Verify Credentials
+              </button>
+              <p class="text-[9px] text-center text-slate-505 font-semibold">Passcode: nexa2026</p>
+            </form>
+          </div>
+
+          <!-- Secured Content Panel -->
+          <div id="operator-secured-panel" class="space-y-6 hidden animate-slideUp">
+            
+            <!-- Quick Log Out Button for Operator -->
+            <div class="flex justify-end mb-4">
+              <button onclick="handleOwnerLogout()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-xl shadow transition-all">
+                <i class="fa-solid fa-right-from-bracket mr-1"></i> Log Out from Operator
+              </button>
+            </div>
+
+            <!-- Metrics & lead listings -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Lead Enquiries -->
+              <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3 shadow-md text-left">
+                <h3 class="text-xs font-black text-indigo-650 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-users"></i>
+                  <span>Premium Enquiries & Leads (WhatsApp Collection)</span>
+                </h3>
+                <div class="space-y-2 max-h-[300px] overflow-y-auto" id="admin-leads-list">
+                  <!-- Populated via JS -->
+                </div>
+              </div>
+
+              <!-- Financial overview -->
+              <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4 shadow-md text-left">
+                <h3 class="text-xs font-black text-[#1e293b] uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-chart-line text-indigo-600"></i>
+                  <span>Real-time Financial Analytics Dashboard</span>
+                </h3>
+                
+                <div class="space-y-2.5 text-xs text-slate-505 font-semibold">
+                  <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                    <span>Total Ad Impressions:</span>
+                    <span id="admin-impressions-total" class="font-bold text-slate-800">0</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                    <span>Google AdSense Earnings:</span>
+                    <span id="admin-adsense-total" class="font-bold text-emerald-600">₹0.00</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                    <span>Premium Upgrade Sales:</span>
+                    <span id="admin-sales-total" class="font-bold text-emerald-400">₹0.00</span>
+                  </div>
+                  <div class="flex justify-between border-b border-slate-100 pb-1.5">
+                    <span>Processing/Syllabus Fee (₹49):</span>
+                    <span id="admin-fee-total" class="font-bold text-emerald-400">₹0.00</span>
+                  </div>
+                  <div class="flex justify-between pt-2 text-[#1e1b4b] font-bold text-sm">
+                    <span>Total Platform Yield:</span>
+                    <span id="admin-gross-yield" class="text-indigo-600">₹0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Configuration panels -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left animate-slideUp">
+              
+              <!-- Manage Elements (CRUD) Panel -->
+              <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 text-xs shadow-md md:col-span-3">
+                <h3 class="text-sm font-bold text-slate-850 pb-2 border-b border-slate-200/50">
+                  <i class="fa-solid fa-database text-indigo-400 mr-1"></i> Manage Repository & Ads (CRUD)
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <!-- Question Papers Manager -->
+                  <div class="space-y-2">
+                    <span class="font-bold text-indigo-400 block">Question Papers</span>
+                    <div id="crud-papers-list" class="space-y-1 max-h-[150px] overflow-y-auto bg-slate-55 p-2 rounded border border-slate-200">
+                      <!-- Populated via JS -->
+                    </div>
+                  </div>
+
+                  <!-- Scholarships Manager -->
+                  <div class="space-y-2">
+                    <span class="font-bold text-indigo-400 block">Scholarships</span>
+                    <div id="crud-scholarships-list" class="space-y-1 max-h-[150px] overflow-y-auto bg-slate-55 p-2 rounded border border-slate-200">
+                      <!-- Populated via JS -->
+                    </div>
+                  </div>
+
+                  <!-- Courses Manager -->
+                  <div class="space-y-2">
+                    <span class="font-bold text-indigo-400 block">Courses & Premium Ads</span>
+                    <div id="crud-courses-list" class="space-y-1 max-h-[150px] overflow-y-auto bg-slate-55 p-2 rounded border border-slate-200">
+                      <!-- Populated via JS -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Adjust General Rates -->
+              <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 text-xs shadow-md">
+                <h3 class="text-sm font-bold text-slate-800 pb-2 border-b border-slate-200/50">Adjust Ad Rates & Price</h3>
+                
+                <div>
+                  <label class="text-[10px] font-bold text-slate-500 block mb-1">Visitor Count Base</label>
+                  <input type="number" id="config-visitors" class="w-full text-xs rounded-lg p-2 text-slate-900 outline-none bg-slate-100">
+                </div>
+
+                <div>
+                  <label class="text-[10px] font-bold text-slate-500 block mb-1">Simulated AdSense CPM Rate (₹)</label>
+                  <input type="number" id="config-cpm" class="w-full text-xs rounded-lg p-2 text-slate-900 outline-none bg-slate-100">
+                </div>
+                
+                <button onclick="saveAdminGeneralConfig()" class="w-full bg-[#4f46e5] hover:bg-indigo-750 text-white font-bold py-2 rounded-lg shadow-md">
+                  Save General Settings
+                </button>
+              </div>
+
+              <!-- Live AdSense ID & Slot Configurations -->
+              <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 text-xs shadow-md">
+                <h3 class="text-sm font-bold text-slate-800 pb-2 border-b border-slate-200/50 flex items-center gap-1.5">
+                  <i class="fa-solid fa-shield text-indigo-600"></i>
+                  <span>Google AdSense ID & Units</span>
+                </h3>
+                
+                <div class="space-y-3">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-300 block mb-0.5">Publisher ID (ca-pub-xxx)</label>
+                    <input type="text" id="config-adsense-id" class="w-full text-xs rounded-lg p-2 text-slate-900 font-mono outline-none">
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-0.5">Below Hero Slot ID</label>
+                    <input type="text" id="config-slot-hero" class="w-full text-xs rounded-lg p-2 text-white font-mono outline-none bg-slate-900">
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-0.5">Sidebar Slot ID</label>
+                    <input type="text" id="config-slot-sidebar" class="w-full text-xs rounded-lg p-2 text-white font-mono outline-none bg-slate-900">
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-0.5">Between Notes Slot ID</label>
+                    <input type="text" id="config-slot-notes" class="w-full text-xs rounded-lg p-2 text-white font-mono outline-none bg-slate-900">
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-0.5">Above Footer Slot ID</label>
+                    <input type="text" id="config-slot-footer" class="w-full text-xs rounded-lg p-2 text-white font-mono outline-none bg-slate-900">
+                  </div>
+                </div>
+                
+                <button onclick="saveAdminAdSlots()" class="w-full bg-[#4f46e5] hover:bg-indigo-750 text-white font-bold py-2 rounded-lg shadow-md">
+                  Save Ad Slot Configurations
+                </button>
+              </div>
+
+              <!-- Inject Question Paper, Courses or Scholarships -->
+              <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 text-xs shadow-md">
+                <h3 class="text-sm font-bold text-[#0f172a] pb-2 border-b border-indigo-950/40">Inject New Element</h3>
+                
+                <form onsubmit="handleGenericInjection(event)" class="space-y-3 text-xs">
+                  <div>
+                    <label class="font-semibold text-slate-505 block mb-1">Element Type</label>
+                    <select id="inject-type" onchange="toggleInjectFormFields()" class="w-full rounded-lg p-2 text-slate-900 bg-white outline-none">
+                      <option value="paper">Question Paper</option>
+                      <option value="scholarship">Scholarship Fund</option>
+                      <option value="course">Academy Course</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="font-semibold text-slate-505 block mb-1">Title / Name</label>
+                    <input type="text" id="inject-title" placeholder="e.g. DHSE Chemistry Model paper" class="w-full rounded-lg p-2 text-slate-900 bg-white outline-none focus:border-indigo-500" required>
+                  </div>
+                  <div id="field-raw-content">
+                    <label class="font-semibold text-slate-505 block mb-1 font-bold">Full Instructions / Notes Text</label>
+                    <textarea id="inject-raw-text" rows="3" placeholder="Syllabus, section layouts, math equations..." class="w-full rounded-lg p-2 text-slate-900 bg-white outline-none focus:border-indigo-500 font-mono resize-none text-[10px]"></textarea>
+                  </div>
+                  <div id="field-meta-content" class="grid grid-cols-2 gap-2 hidden">
+                    <div>
+                      <label class="font-semibold text-slate-505 block mb-1">Value/Amount/Price</label>
+                      <input type="text" id="inject-value" placeholder="e.g. ₹50,000 or ₹499" class="w-full rounded-lg p-2 text-slate-900 bg-white outline-none focus:border-indigo-500">
+                    </div>
+                    <div>
+                      <label class="font-semibold text-slate-505 block mb-1">Deadline/Duration/Mentor</label>
+                      <input type="text" id="inject-meta" placeholder="e.g. 2026-12-31 or Prof. Venu" class="w-full rounded-lg p-2 text-slate-900 bg-white outline-none focus:border-indigo-500">
+                    </div>
+                  </div>
+                  <button type="submit" class="w-full bg-[#4f46e5] hover:bg-indigo-750 text-white font-bold py-2 rounded-lg shadow-md">
+                    Inject & Sync Element
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- --- ADSENSE READY PAGES VIEW CHANNELS --- -->
+        <!-- TAB: ABOUT US -->
+        <div id="tab-about" class="tab-view space-y-6 text-left hidden animate-fadeIn">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-md space-y-4">
+            <h2 class="text-xl font-black text-[#0f172a] border-b border-slate-200 pb-2">About EduNexa Hub</h2>
+            <p class="text-sm text-slate-700 leading-relaxed font-semibold">
+              Welcome to <strong>EduNexa Hub</strong>, a premium educational platform dedicated to supporting higher secondary and high school students across Kerala. Our primary mission is to democratize high-quality study resources, board examination question papers, interactive mock tests, and smart AI syllabus study outlines under one unified safe space.
+            </p>
+            <p class="text-sm text-slate-700 leading-relaxed font-semibold">
+              We compile academic contents aligned carefully with the Kerala DHSE (HSSLive) guidelines and SCERT educational frameworks to ensure the highest standards of learning efficiency.
+            </p>
+            <h3 class="text-md font-bold text-indigo-650 mt-4">Why Choose Us?</h3>
+            <ul class="list-disc pl-5 text-xs text-slate-700 space-y-2">
+              <li class="font-bold">Verified Kerala State syllabus papers database.</li>
+              <li class="font-bold">Fully automated, secure student registration pipeline.</li>
+              <li class="font-bold">Privacy-first data storage strictly adhering to modern compliance rules.</li>
+              <li class="font-bold">Completely ad-free optional premium student club packages.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- TAB: CONTACT US -->
+        <div id="tab-contact" class="tab-view space-y-6 text-left hidden animate-fadeIn">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-md space-y-4">
+            <h2 class="text-xl font-black text-[#0f172a] border-b border-slate-200 pb-2">Contact Us</h2>
+            <p class="text-sm text-slate-700 leading-relaxed font-semibold">
+              Have questions, issues, or custom business inquiries? Get in touch with our representative support cell.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-700">
+              <div class="space-y-3 bg-[#f8fafc] p-4 rounded-xl border border-slate-200">
+                <p class="font-bold"><strong><i class="fa-solid fa-envelope mr-1.5 text-indigo-600"></i> Official Support Email:</strong> support@edunexahub.in</p>
+                <p class="font-bold"><strong><i class="fa-solid fa-phone mr-1.5 text-indigo-600"></i> Student Helpline:</strong> +91 7593062573 (Mon - Sat, 10 AM to 5 PM)</p>
+                <p class="font-bold"><strong><i class="fa-solid fa-location-dot mr-1.5 text-indigo-600"></i> Corporate Location:</strong> Kolathur, Malappuram, Kerala, India - 679338</p>
+              </div>
+              <div class="space-y-3">
+                <h4 class="font-bold text-[#0f172a]">Direct Feedback Desk</h4>
+                <div class="space-y-2">
+                  <input type="text" placeholder="Message Subject" class="w-full p-2.5 rounded-lg text-xs" id="contact-subject">
+                  <textarea placeholder="Write your concern or question here..." rows="3" class="w-full p-2.5 rounded-lg text-xs" id="contact-msg"></textarea>
+                  <button onclick="triggerDirectContactSubmit()" class="bg-[#4f46e5] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-[#3730a3] transition-colors shadow">Send Message</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: PRIVACY POLICY -->
+        <div id="tab-privacy" class="tab-view space-y-6 text-left hidden animate-fadeIn">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-md space-y-4">
+            <h2 class="text-xl font-black text-[#0f172a] border-b border-slate-200 pb-2">Privacy Policy</h2>
+            <p class="text-xs text-slate-400 italic">Last Updated: June 15, 2026</p>
+            <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+              At EduNexa Hub, accessible from this device, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by EduNexa Hub and how we use it.
+            </p>
+            <h3 class="text-sm font-bold text-indigo-600 mt-2">1. Personal Information We Collect</h3>
+            <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+              When you register for an account on our student portal, we ask for personal contact information including your full name, email address, phone number, WhatsApp number, and educational institution. This data is securely stored locally on your device to enable persistent session logging and points validation.
+            </p>
+            <h3 class="text-sm font-bold text-indigo-600 mt-2">2. Google AdSense Cookie Policies</h3>
+            <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+              EduNexa Hub displays advertisements served via Google AdSense. Google uses cookies, such as the DART cookie, to serve tailored ads to students based on their visits across various sites on the internet. Visitors can choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy.
+            </p>
+            <h3 class="text-sm font-bold text-indigo-600 mt-2">3. Under 18 Age Appropriate Protection</h3>
+            <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+              We provide fully safe, healthy, and age-appropriate content for students under 18. We strictly do not publish or collect suggestive, violent, harmful, or tobacco-related references.
+            </p>
+          </div>
+        </div>
+
+        <!-- TAB: TERMS & CONDITIONS -->
+        <div id="tab-terms" class="tab-view space-y-6 text-left hidden animate-fadeIn">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-md space-y-4">
+            <h2 class="text-xl font-black text-[#0f172a] border-b border-slate-200 pb-2">Terms & Conditions</h2>
+            <p class="text-xs text-slate-400 italic">Last Updated: June 15, 2026</p>
+            <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+              Welcome to EduNexa Hub. These terms and conditions outline the rules and regulations for the use of EduNexa's Platform.
+            </p>
+            <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+              By accessing this website, we assume you accept these terms and conditions. Do not continue to use EduNexa Hub if you do not agree to take all of the terms and conditions stated on this page.
+            </p>
+            <h3 class="text-sm font-bold text-indigo-600 mt-2">1. Referral Hub System Fair-Use</h3>
+            <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+              Points earned inside the Referral Hub are restricted strictly to 3 invites per 24 hours per user. Any fraudulent use of registering dummy accounts with the intention to artificially inflate your points balance will trigger account suspension.
+            </p>
+            <h3 class="text-sm font-bold text-indigo-600 mt-2">2. Educational Resource License</h3>
+            <p class="text-xs text-slate-700 leading-relaxed font-semibold">
+              The question papers, SCERT guidelines, and AI outlines indexed on our platform are compiled solely for student revision. No part of these digital resources should be resold commercially.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer with global above footer banner and AdSense policies links -->
+      <div class="mt-8 pt-4 border-t border-slate-200 w-full text-center">
+        <div id="footer-ad-placement"></div>
+        
+        <!-- AdSense compliance links in footer layout -->
+        <div class="flex flex-wrap justify-center gap-4 text-xs font-bold text-indigo-600 mt-4 mb-2">
+          <button onclick="navigateToTab('about')" class="hover:underline">About Us</button>
+          <button onclick="navigateToTab('contact')" class="hover:underline">Contact Us</button>
+          <button onclick="navigateToTab('privacy')" class="hover:underline">Privacy Policy</button>
+          <button onclick="navigateToTab('terms')" class="hover:underline">Terms & Conditions</button>
+        </div>
+        
+        <p class="text-center text-[10px] text-slate-400 font-bold mt-2">
+          © 2026 EduNexa Business Platform. Sourced and styled under clean Kerala Board directives.
+        </p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Consolidating all libraries as import modules inside index.html for instant Preview support -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Standard fallback mock config in case environment is outside canvas wrapper
+    const defaultFirebaseConfig = {
+      apiKey: "", // Filled automatically at runtime
+      authDomain: "edunexa-db.firebaseapp.com",
+      projectId: "edunexa-db",
+      storageBucket: "edunexa-db.appspot.com",
+      messagingSenderId: "1234567890",
+      appId: "1:1234567890:web:1234567890"
+    };
+
+    // Firebase configuration and ID extraction
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : defaultFirebaseConfig;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'edunexa-platform-app';
+
+    // Initialize Services
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Global application variables
+    window.isPremium = false;
+    window.premiumTier = 'free';
+    window.visitorCount = 0; 
+    window.cpmRate = 240.00;
+    window.adImpressions = 0;
+    window.adEarnings = 0.00;
+    window.premiumRevenue = 0.00;
+    window.serviceFeeRevenue = 0.00;
+    window.activeTab = 'dashboard';
+    window.isOwnerAuthenticated = false;
+    window.secretClicks = 0;
+    window.ownerKey = "owner2026"; 
+    window.ownerName = "Platform Director"; 
+
+    // Safety deletion variables
+    window.deleteTarget = { type: null, id: null };
+
+    // Leads & Enquiries state lists
+    window.leadsList = [];
+
+    // Reactive Student profile state synced on database
+    window.studentProfile = {
+      username: '',
+      fullName: '',
+      phone: '',
+      whatsapp: '',
+      email: '',
+      school: '',
+      grade: 'Plus Two Science',
+      points: 0,
+      referralCode: 'GUEST999'
+    };
+
+    // Premium plan benefits mappings
+    window.planBenefits = {
+      Silver: [
+        "Complete Ad-Free browsing environment",
+        "50 Advanced local AI Notes credits / mo",
+        "Standard school model paper download access"
+      ],
+      Gold: [
+        "Silver access features unlocked",
+        "Unlimited dynamic AI Notes generation",
+        "Private study circle collaboration rooms access",
+        "Live counseling seminar reservation options"
+      ],
+      Platinum: [
+        "All features of Silver and Gold tiers included",
+        "Premium Pro Resume & Portfolio Builder tools unlocked",
+        "1-on-1 WhatsApp assistance channel with expert mentors",
+        "Custom entrance level mock exam papers formulated"
+      ]
+    };
+
+    // Default platform rules
+    window.platformRules = [
+      { id: 1, rule: "Safety First: Never share your account passwords or login keys with any other student companion.", category: "Security" },
+      { id: 2, rule: "Fair Referral Program: Daily limit of maximum 3 referred friends to prevent system misuse. Earn 2 Points per join.", category: "Referrals" },
+      { id: 3, rule: "Academic Integrity: Use AI generated outlines to assist your revisions, not to bypass regular class homework.", category: "AI Policy" },
+      { id: 4, rule: "Healthy Space: No abusive language, violence reference, or inappropriate content is permitted in study groups.", category: "Community Guidelines" }
+    ];
+
+    // Injected Coaching Center Advertisements
+    window.coachingAds = [
+      { id: 1, institute: "Trivandrum Entrance Academy", offer: "Crash Batch Starts This Monday", phone: "+91 471 25488", location: "East Fort, TVM" },
+      { id: 2, institute: "Kochi Science Hub", offer: "Interactive Practical Batches Available", phone: "+91 484 99558", location: "Kadavanthra, Kochi" }
+    ];
+
+    // Question papers model datasets
+    window.papers = [
+      { 
+        id: 1, 
+        title: 'Plus Two Physics Previous Year Exam Paper', 
+        board: 'HSSLive Kerala / DHSE', 
+        type: 'Standard', 
+        year: 2024,
+        content: `DHSE KERALA PLUS TWO PHYSICS PREVIOUS EXAM PAPER (2024)\n=====================================================================\nTIME ALLOWED: 2.5 Hours                             MAXIMUM MARKS: 60\n\nSECTION A: MULTIPLE CHOICE QUESTIONS (1 Mark Each - Total: 10 Marks)\nQ1. The electric field intensity E at a distance r from an infinitely long straight charged wire is proportional to:\n    a) r^2          b) 1/r         c) 1/r^2          d) r`
+      },
+      { 
+        id: 2, 
+        title: 'Class 10 SCERT Mathematics Model Question Pool', 
+        board: 'SCERT Kerala', 
+        type: 'Standard', 
+        year: 2025,
+        content: `SCERT KERALA SSLC MATHEMATICS MODEL QUESTION POOL (2025)\n=====================================================================\nTIME ALLOWED: 2.5 Hours                             MAXIMUM MARKS: 80`
+      }
+    ];
+
+    window.scholarships = [
+      { id: 1, title: 'National Merit Scholarship Program', amount: '₹50,000', deadline: '2026-08-15', eligibility: 'High School Seniors', description: 'Highly competitive merit-based scholarship for high school seniors demonstrating academic excellence.', url: 'https://www.nationalmerit.org/' },
+      { id: 2, title: 'Women in STEM Grant & Scholarship', amount: '₹25,000', deadline: '2026-09-01', eligibility: 'Female undergraduates in Tech', description: 'Financial grant designed to support and champion female leaders entering computer science and engineering.', url: 'https://swe.org/scholarships/' }
+    ];
+
+    window.studyPlans = [
+      { id: 1, task: "Complete SSLC Math Arithmetic Progressions Chapter", completed: false },
+      { id: 2, task: "Solve Plus Two Physics Electrostatics Past Paper Q6", completed: true }
+    ];
+
+    window.groupChat = [];
+
+    window.mockTestLibrary = [
+      {
+        id: "sslc-math",
+        title: "SSLC Mathematics Speed Mock Test",
+        questions: [
+          { q: "What is the common difference of the sequence: 5, 12, 19, 26...?", options: ["5", "7", "6", "8"], correct: "7" },
+          { q: "The probability of getting a number greater than 4 on throwing a die is:", options: ["1/3", "1/6", "2/3", "1/2"], correct: "1/3" }
+        ],
+        price: 49
+      }
+    ];
+
+    window.companionList = {
+      "abhijith_tvm": { fullName: "Abhijith TVM", password: "123", phone: "+91 94470 11111", email: "abhijith@school.in" },
+      "sneha_kochi": { fullName: "Sneha Kochi", password: "123", phone: "+91 98460 22222", email: "sneha@school.in" },
+      "rahul_nair": { fullName: "Rahul Nair", password: "123", phone: "+91 7593062573", email: "rahul.nair@school.in" }
+    };
+
+    window.invitedFriends = [
+      { id: 1, name: "Abhijith TVM", status: "Joined", pointsEarned: 2, timestamp: Date.now() - 3600000 }
+    ];
+
+    window.selectedPlanLead = "Gold";
+    window.viewingPaper = null;
+    window.activeExam = null;
+    window.currentExamAnswers = {};
+    window.examDate = "2027-03-10";
+
+    // Navigation and layout configuration
+    window.navigationTabs = navigationTabs;
+    window.coursesList = coursesList;
+    window.resumeData = { ...studentProfile };
+    window.timeLeft = { days: 0, hours: 0, mins: 0, secs: 0 };
+    window.calcData = { obtained: '540', total: '600', result: null };
+
+    // --- RULE 3: AUTHENTICATE FIRST ---
+    const initAuthAndSync = async () => {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+        setupFirestoreSyncListeners();
+      } catch (error) {
+        console.error("Auth and sync bootstrap failed:", error);
+        triggerToast("Cloud sync failed. Operating locally.", "error");
+      }
+    };
+
+    // --- SEED COMPANION ACCOUNTS COHERENTLY TO FIRESTORE ON SIGN UP ---
+    async function initFirebaseCompanions() {
+      const user = auth.currentUser;
+      if (!user) return;
+      for (const [username, profile] of Object.entries(companionList)) {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'accounts', username);
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists()) {
+          await setDoc(docRef, {
+            username: username,
+            fullName: profile.fullName,
+            password: profile.password,
+            phone: profile.phone,
+            whatsapp: profile.phone,
+            email: profile.email,
+            school: 'Government Model Boys Higher Secondary School, Trivandrum',
+            grade: 'Plus Two Science',
+            points: 0,
+            referralCode: username.toUpperCase() + '150',
+            isPremium: false
+          });
+        }
+      }
+    }
+
+    // --- RULE 1 & 2: SYNC DATA TO REAL CLOUD DATABASE (FIRESTORE) ---
+    function setupFirestoreSyncListeners() {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      initFirebaseCompanions();
+
+      // Live sync papers
+      onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'papers'), (snapshot) => {
+        const temp = [];
+        snapshot.forEach(docSnap => {
+          temp.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        if (temp.length > 0) {
+          window.papers = temp;
+        } else {
+          seedDefaultSyncData('papers', window.papers);
+        }
+        renderKeralaQuestionPapers();
+        renderDashboardElements();
+        if (isOwnerAuthenticated) renderOperatorCrudPanel();
+      }, err => console.error("Papers sync error", err));
+
+      // Live sync scholarships
+      onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'scholarships'), (snapshot) => {
+        const temp = [];
+        snapshot.forEach(docSnap => {
+          temp.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        if (temp.length > 0) {
+          window.scholarships = temp;
+        } else {
+          seedDefaultSyncData('scholarships', window.scholarships);
+        }
+        renderScholarshipsGrid();
+        if (isOwnerAuthenticated) renderOperatorCrudPanel();
+      }, err => console.error("Scholarships sync error", err));
+
+      // Live sync courses
+      onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'courses'), (snapshot) => {
+        const temp = [];
+        snapshot.forEach(docSnap => {
+          temp.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        if (temp.length > 0) {
+          window.coursesList = temp;
+        } else {
+          seedDefaultSyncData('courses', window.coursesList);
+        }
+        renderCoursesList();
+        if (isOwnerAuthenticated) renderOperatorCrudPanel();
+      }, err => console.error("Courses sync error", err));
+
+      // Live sync leads
+      onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'leads'), (snapshot) => {
+        window.leadsList = [];
+        snapshot.forEach(docSnap => {
+          window.leadsList.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        if (isOwnerAuthenticated) renderOperatorConsoleSecuredMetrics();
+      }, err => console.error("Leads sync error", err));
+
+      // Live sync chat
+      onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'groupChat'), (snapshot) => {
+        window.groupChat = [];
+        snapshot.forEach(docSnap => {
+          window.groupChat.push(docSnap.data());
+        });
+        window.groupChat.sort((a, b) => a.timestamp - b.timestamp);
+        renderGroupMessagesList();
+      }, err => console.error("Chat sync error", err));
+    }
+
+    async function seedDefaultSyncData(collectionName, defaultArray) {
+      for (const item of defaultArray) {
+        const docId = item.id ? String(item.id) : Math.random().toString(36).substr(2, 9);
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', collectionName, docId), item);
+      }
+    }
+
+    // --- SECURE PERSISTENT SESSION CHECKER VIA LOCALSTORAGE REFERENCE ID ONLY ---
+    function checkPersistentSession() {
+      const savedSessionFlag = localStorage.getItem('edunexa_remember_me_flag');
+      const savedProfileName = localStorage.getItem('edunexa_active_username_token');
+
+      if (savedSessionFlag === 'true' && savedProfileName) {
+        listenToUserProfileDoc(savedProfileName);
+      } else {
+        showLoginArea();
+      }
+    }
+
+    let unsubscribeUserProfile = null;
+    function listenToUserProfileDoc(username) {
+      if (unsubscribeUserProfile) unsubscribeUserProfile();
+      
+      const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'accounts', username);
+      unsubscribeUserProfile = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+          window.studentProfile = docSnap.data();
+          window.isPremium = window.studentProfile.isPremium || false;
+          window.premiumTier = window.studentProfile.premiumTier || 'free';
+
+          const premiumIndicator = document.getElementById('premium-status-indicator');
+          if (window.isPremium && premiumIndicator) {
+            premiumIndicator.classList.remove('hidden');
+            premiumIndicator.innerHTML = `<i class="fa-solid fa-star mr-1 text-amber-500 animate-spin"></i> Premium: ${window.premiumTier.toUpperCase()}`;
+          } else if (premiumIndicator) {
+            premiumIndicator.classList.add('hidden');
+          }
+
+          window.isStudentLoggedIn = true;
+          showDashboardSecuredArea();
+          updateProfileLayout();
+          renderReferralsList();
+        } else {
+          showLoginArea();
+        }
+      }, (err) => {
+        console.error("Profile sync failure", err);
+        showLoginArea();
+      });
+    }
+
+    function showLoginArea() {
+      window.isStudentLoggedIn = false;
+      const authBlock = document.getElementById('dashboard-auth-block');
+      const securedView = document.getElementById('dashboard-secured-view');
+      if (authBlock) authBlock.classList.remove('hidden');
+      if (securedView) securedView.classList.add('hidden');
+    }
+
+    function showDashboardSecuredArea() {
+      const authBlock = document.getElementById('dashboard-auth-block');
+      const securedView = document.getElementById('dashboard-secured-view');
+      if (authBlock) authBlock.classList.add('hidden');
+      if (securedView) securedView.classList.remove('hidden');
+    }
+
+    // Dynamic Navigation Tabs Mapping
+    function renderNavigation() {
+      const container = document.getElementById('nav-container');
+      if (!container) return;
+      container.innerHTML = "";
+      
+      window.navigationTabs.forEach((tab) => {
+        const activeClass = window.activeTab === tab.id ? "bg-[#4f46e5] text-white shadow-md" : "text-slate-300 hover:bg-slate-800 hover:text-white";
+        container.innerHTML += `
+          <button onclick="navigateToTab('${tab.id}')" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-all ${activeClass}">
+            <i class="fa-solid ${tab.icon} text-sm"></i>
+            <span>${tab.label}</span>
+          </button>
+        `;
+      });
+
+      const policyPages = [
+        { id: 'about', label: 'About Us', icon: 'fa-circle-info' },
+        { id: 'contact', label: 'Contact Us', icon: 'fa-paper-plane' },
+        { id: 'privacy', label: 'Privacy Policy', icon: 'fa-shield-halved' },
+        { id: 'terms', label: 'Terms & Conditions', icon: 'fa-gavel' }
+      ];
+
+      container.innerHTML += `<div class="border-t border-slate-700/50 my-2 pt-2"></div>`;
+
+      policyPages.forEach((policy) => {
+        const activeClass = window.activeTab === policy.id ? "bg-[#4f46e5] text-white shadow-md" : "text-slate-400 hover:bg-slate-800 hover:text-white";
+        container.innerHTML += `
+          <button onclick="navigateToTab('${policy.id}')" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg transition-all ${activeClass}">
+            <i class="fa-solid ${policy.icon} text-sm"></i>
+            <span class="text-xs font-semibold">${policy.label}</span>
+          </button>
+        `;
+      });
+
+      if (window.isOwnerAuthenticated) {
+        const operatorClass = window.activeTab === 'operator' ? 'bg-[#0f172a] border-indigo-900 text-white' : 'border-emerald-500 text-emerald-400 hover:bg-slate-800';
+        container.innerHTML += `
+          <button onclick="navigateToTab('operator')" class="w-full flex items-center justify-between px-4 py-2.5 rounded-lg border border-dashed transition-all mt-4 ${operatorClass}">
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+              <span class="font-bold text-xs">Operator Control Room</span>
+            </div>
+            <span class="text-[9px] bg-emerald-500 text-white px-1 py-0.5 rounded font-bold">LIVE</span>
+          </button>
+        `;
+      }
+    }
+
+    function navigateToTab(tabId) {
+      window.activeTab = tabId;
+      document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+      
+      const targetElement = document.getElementById(`tab-${tabId}`);
+      if (targetElement) targetElement.classList.remove('hidden');
+      
+      const titleHeader = document.getElementById('active-tab-title');
+      if (titleHeader) {
+        const nameMap = {
+          'about': 'About Us',
+          'contact': 'Contact Us',
+          'privacy': 'Privacy Policy',
+          'terms': 'Terms & Conditions'
+        };
+        titleHeader.innerText = nameMap[tabId] || tabId.replace('-', ' ');
+      }
+      
+      renderNavigation();
+
+      if (!window.isPremium) {
+        window.adImpressions += Math.floor(Math.random() * 2) + 1;
+        window.adEarnings = Number((window.adImpressions * (window.cpmRate / 1000)).toFixed(2));
+        updatePlatformCountersVisuals();
+      }
+    }
+
+    window.navigateToTab = navigateToTab;
+
+    // Handles user sign in via Cloud doc lookup validation
+    window.handleStudentLoginSubmit = async function(event) {
+      event.preventDefault();
+      const usernameInput = document.getElementById('login-username');
+      const passwordInput = document.getElementById('login-password');
+      
+      const username = usernameInput ? usernameInput.value.trim().toLowerCase() : '';
+      const password = passwordInput ? passwordInput.value : '';
+
+      if (!username || !password) {
+        triggerToast("Please populate both Username ID and Password.", "error");
+        return;
+      }
+
+      const rememberChecked = document.getElementById('remember-me').checked;
+
+      // Safe lookup query inside cloud Firestore
+      const accountRef = doc(db, 'artifacts', appId, 'public', 'data', 'accounts', username);
+      const accountSnap = await getDoc(accountRef);
+      
+      if (!accountSnap.exists()) {
+        triggerToast("This companion account does not exist in our database!", "error");
+        return;
+      }
+
+      const cached = accountSnap.data();
+      if (cached.password !== password) {
+        triggerToast("Incorrect password! Please try again.", "error");
+        return;
+      }
+
+      window.studentProfile = cached;
+      window.isStudentLoggedIn = true;
+
+      // Set snapshot listener for live sync across devices
+      listenToUserProfileDoc(username);
+
+      if (rememberChecked) {
+        localStorage.setItem('edunexa_remember_me_flag', 'true');
+        localStorage.setItem('edunexa_active_username_token', username);
+      } else {
+        localStorage.removeItem('edunexa_remember_me_flag');
+        localStorage.removeItem('edunexa_active_username_token');
+      }
+
+      triggerToast(`Successfully signed in as ${window.studentProfile.fullName}.`);
+    };
+
+    window.handleStudentRegisterSubmit = async function(event) {
+      event.preventDefault();
+      const username = document.getElementById('register-username').value.trim();
+      const fullName = document.getElementById('register-name').value.trim();
+      const password = document.getElementById('register-password').value;
+      const phone = document.getElementById('register-phone').value.trim();
+      const whatsapp = document.getElementById('register-whatsapp').value.trim();
+      const school = document.getElementById('register-school').value.trim();
+
+      if (!username || !fullName || !password || !phone) {
+        triggerToast("Please populate all required registration inputs.", "error");
+        return;
+      }
+
+      const key = username.toLowerCase();
+      const accountRef = doc(db, 'artifacts', appId, 'public', 'data', 'accounts', key);
+      const accountSnap = await getDoc(accountRef);
+
+      if (accountSnap.exists()) {
+        triggerToast("This username is already taken! Try another one.", "error");
+        return;
+      }
+
+      const newProfile = {
+        username: key,
+        fullName: fullName,
+        password: password,
+        phone: phone,
+        whatsapp: whatsapp || phone,
+        email: `${key}@edunexa.com`,
+        school: school || 'Govt School, Kerala',
+        grade: 'Plus Two Science',
+        points: 0,
+        referralCode: username.toUpperCase() + '150',
+        isPremium: false,
+        premiumTier: 'free'
+      };
+
+      // Save custom user model inside real database permanently
+      await setDoc(accountRef, newProfile);
+
+      window.studentProfile = newProfile;
+      window.isStudentLoggedIn = true;
+
+      listenToUserProfileDoc(key);
+
+      const rememberChecked = document.getElementById('remember-me').checked;
+      if (rememberChecked) {
+        localStorage.setItem('edunexa_remember_me_flag', 'true');
+        localStorage.setItem('edunexa_active_username_token', key);
+      }
+
+      triggerToast(`Account ${fullName} created successfully! Welcome.`);
+    };
+
+    window.handleProfileLogout = function() {
+      if (unsubscribeUserProfile) unsubscribeUserProfile();
+
+      window.studentProfile = {
+        username: '',
+        fullName: '',
+        phone: '',
+        whatsapp: '',
+        email: '',
+        school: '',
+        grade: 'Plus Two Science',
+        points: 0,
+        referralCode: 'GUEST999'
+      };
+      
+      window.isPremium = false;
+      window.premiumTier = 'free';
+      
+      localStorage.removeItem('edunexa_remember_me_flag');
+      localStorage.removeItem('edunexa_active_username_token');
+      localStorage.removeItem('edunexa_is_premium');
+      localStorage.removeItem('edunexa_premium_tier');
+
+      updateProfileLayout();
+      showLoginArea();
+      triggerToast("Logged out successfully. Persistent credentials cleared.");
+    };
+
+    window.changeAuthMode = function(mode) {
+      const loginForm = document.getElementById('auth-login-form');
+      const registerForm = document.getElementById('auth-register-form');
+      const btnLogin = document.getElementById('btn-auth-login');
+      const btnRegister = document.getElementById('btn-auth-register');
+
+      if (mode === 'login') {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        btnLogin.className = "flex-1 pb-2 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400";
+        btnRegister.className = "flex-1 pb-2 text-sm font-bold text-slate-500";
+      } else {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        btnLogin.className = "flex-1 pb-2 text-sm font-bold text-slate-500";
+        btnRegister.className = "flex-1 pb-2 text-sm font-bold border-b-2 border-indigo-500 text-indigo-405";
+      }
+    };
+
+    window.handleReferralInviteSubmit = async function(event) {
+      event.preventDefault();
+      const input = document.getElementById('refer-friend-name');
+      if (!input) return;
+      const targetFriendUsername = input.value.trim().toLowerCase();
+      if (!targetFriendUsername) return;
+
+      // Cloud Verification lookup on Firestore database
+      const friendRef = doc(db, 'artifacts', appId, 'public', 'data', 'accounts', targetFriendUsername);
+      const friendSnap = await getDoc(friendRef);
+
+      if (!friendSnap.exists()) {
+        triggerToast("This companion account does not exist in our database!", "error");
+        return;
+      }
+
+      const parsedFriend = friendSnap.data();
+
+      // Invites Limit logic checks
+      const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+      const invitesTodayCount = window.invitedFriends.filter(
+        friend => friend.status === "Invited" && friend.timestamp > oneDayAgo
+      ).length;
+
+      if (invitesTodayCount >= 3) {
+        triggerToast("Daily invite limit reached! Maximum 3 referrals per 24 hours.", "error");
+        return;
+      }
+
+      // Check if already invited
+      const alreadyInvited = window.invitedFriends.find(friend => friend.name.toLowerCase() === parsedFriend.fullName.toLowerCase());
+      if (alreadyInvited) {
+        triggerToast("This friend has already been referred!", "error");
+        return;
+      }
+
+      window.invitedFriends.push({
+        id: window.invitedFriends.length + 1,
+        name: parsedFriend.fullName,
+        status: "Invited",
+        pointsEarned: 2,
+        timestamp: Date.now()
+      });
+
+      // Update current user points in Cloud Firestore
+      const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'accounts', window.studentProfile.username);
+      await updateDoc(userRef, {
+        points: window.studentProfile.points + 2
+      });
+
+      input.value = "";
+      triggerToast(`🎉 2 reward points successfully credited for referring ${parsedFriend.fullName}!`);
+    };
+
+    window.redeemPointsForSilver = async function() {
+      if (window.studentProfile.points < 450) {
+        triggerToast("You need 450 points to redeem premium access. Keep referring friends!", "error");
+        return;
+      }
+
+      // Sync updated data points on database
+      const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'accounts', window.studentProfile.username);
+      await updateDoc(userRef, {
+        points: window.studentProfile.points - 450,
+        isPremium: true,
+        premiumTier: 'silver'
+      });
+
+      triggerToast("🎉 Congratulations! Redeemed 450 points for free Month of Silver Premium!");
+    };
+
+    window.triggerScholarshipSync = async function() {
+      const icon = document.getElementById('spin-schol');
+      if (icon) icon.classList.remove('hidden');
+
+      setTimeout(async () => {
+        const newSchol = {
+          id: String(window.scholarships.length + 1),
+          title: 'Kerala Higher Education Scholarship Scheme',
+          amount: '₹12,000 / Yr',
+          deadline: '2026-11-15',
+          eligibility: 'Degree students in Govt colleges',
+          description: 'Assistance by Kerala State Higher Education Council.',
+          url: 'http://www.kshec.kerala.gov.in/'
+        };
+
+        // Add to cloud database
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'scholarships', newSchol.id), newSchol);
+
+        if (icon) icon.classList.add('hidden');
+        triggerToast("🔄 Scholarships updated successfully.");
+      }, 1200);
+    };
+
+    window.handleGenericInjection = async function(event) {
+      event.preventDefault();
+      const type = document.getElementById('inject-type').value;
+      const title = document.getElementById('inject-title').value.trim();
+      const rawText = document.getElementById('inject-raw-text').value.trim();
+      const val = document.getElementById('inject-value').value.trim();
+      const meta = document.getElementById('inject-meta').value.trim();
+
+      if (type === 'paper') {
+        const id = String(window.papers.length + 1);
+        const newPaper = {
+          id,
+          title,
+          board: 'DHSE Custom Upload',
+          type: 'Local Added',
+          year: 2026,
+          content: rawText
+        };
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'papers', id), newPaper);
+      } else if (type === 'scholarship') {
+        const id = String(window.scholarships.length + 1);
+        const newSchol = {
+          id,
+          title,
+          amount: val || '₹10,000',
+          deadline: meta || '2026-12-31',
+          eligibility: 'Eligible Students',
+          description: rawText || 'No description provided.',
+          url: 'http://www.kshec.kerala.gov.in/'
+        };
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'scholarships', id), newSchol);
+      } else if (type === 'course') {
+        const id = String(window.coursesList.length + 1);
+        const newCourse = {
+          id,
+          title,
+          desc: rawText || 'Premium Crash Batch',
+          mentor: meta || 'Expert Faculty',
+          price: val || '₹499',
+          duration: '30 Hours'
+        };
+        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'courses', id), newCourse);
+      }
+
+      // Reset Inputs
+      document.getElementById('inject-title').value = "";
+      document.getElementById('inject-raw-text').value = "";
+      document.getElementById('inject-value').value = "";
+      document.getElementById('inject-meta').value = "";
+
+      triggerToast(`Synced new ${type} successfully to cloud!`);
+    };
+
+    window.confirmDelete = async function() {
+      const { type, id } = window.deleteTarget;
+      if (!type || !id) return;
+
+      const pathMap = {
+        'paper': 'papers',
+        'scholarship': 'scholarships',
+        'course': 'courses'
+      };
+
+      // Since firebase JS SDK v9/v10/v11 deleteDoc can be accessed, we'll write delete logically
+      // Or we can import deleteDoc, let's dynamic import deleteDoc safely
+      const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+      await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', pathMap[type], String(id)));
+
+      cancelDelete();
+      triggerToast(`Permanently deleted specified repository item from cloud.`);
+    };
+
+    window.handleChatSend = async function(event) {
+      event.preventDefault();
+      const input = document.getElementById('chat-text-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const now = Date.now();
+      const timeStr = new Date(now).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const messageObj = {
+        sender: `${window.studentProfile.fullName || 'Guest'} (You)`,
+        text: text,
+        timestamp: now,
+        time: timeStr
+      };
+
+      await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'groupChat'), messageObj);
+      input.value = "";
+    };
+
+    // --- OPERATOR ROOM CONTROL PANEL OUT ---
+    window.handleOwnerLogout = function() {
+      window.isOwnerAuthenticated = false;
+      const barrier = document.getElementById('operator-auth-barrier');
+      const panel = document.getElementById('operator-secured-panel');
+      const badge = document.getElementById('role-badge');
+
+      if (barrier) barrier.classList.remove('hidden');
+      if (panel) panel.classList.add('hidden');
+      if (badge) {
+        badge.innerText = "Student Lounge";
+        badge.className = "text-[9px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30";
+      }
+      
+      navigateToTab('dashboard');
+      triggerToast("Operator control panel locked out.");
+    };
+
+    // Bootstrap secure authentication and live synchronization on start
+    initAuthAndSync();
+
+    // Export variables to window
+    window.app = app;
+    window.auth = auth;
+    window.db = db;
+  </script>
+</body>
+</html>
